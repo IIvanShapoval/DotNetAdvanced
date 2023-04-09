@@ -1,8 +1,6 @@
-﻿using Catalog.Domain.Common;
-
-namespace Catalog.Domain.Entities
+﻿namespace Catalog.Application.Features.Products.Queries.GetProducts
 {
-    public class Product : AuditableEntity
+    public class ProductVm
     {
         public Guid Id { get; set; }
 
@@ -12,7 +10,7 @@ namespace Catalog.Domain.Entities
 
         public string? Image { get; set; }
 
-        public Guid CategoryId { get; set; }
+        public CategoryDto Category { get; set; } = default!;
 
         public decimal Price { get; set; }
 
