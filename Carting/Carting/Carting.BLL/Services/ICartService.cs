@@ -1,13 +1,12 @@
 ﻿using CartingService.Carting.BLL.Dtos;
-using CartingService.Carting.DAL.Models;
 
 namespace CartingService.Carting.BLL.Services
 {
     public interface ICartService
     {
-        CartDto GetCartById(string id);
-        void AddCartItem(string cartId, CartItemDto itemDto);
-        IEnumerable<CartItemDto> GetCartItems(string cartId);
-        bool RemoveCartItem(string cartId, int itemId);
+        CartDto GetCartById(Guid id);
+        Guid AddCartItem(Guid cartId, CartItemDto itemDto);
+        IEnumerable<CartItemDto> GetCartItems(Guid cartId);
+        bool RemoveCartItem(Guid cartId, Guid itemId);
     }
 }

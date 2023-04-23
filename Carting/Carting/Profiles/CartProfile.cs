@@ -9,9 +9,8 @@ namespace CartingService.Profiles
         public CartProfile()
         {
             CreateMap<Cart, CartDto>()
-    .               ForMember(dest => dest.Items, opt => opt.MapFrom(src => src.Items));
+                    .ForMember(dest => dest.Items, opt => opt.MapFrom(src => src.Items));
             CreateMap<CartItem, CartItemDto>();
-            CreateMap<CartItemDto, CartItem>();
         }
     }
 }

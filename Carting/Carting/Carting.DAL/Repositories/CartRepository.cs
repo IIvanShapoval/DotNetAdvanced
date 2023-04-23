@@ -1,30 +1,14 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using CartingService.Carting.DAL.Models;
+﻿using CartingService.Carting.DAL.Models;
+using CartingService.Carting.DAL.Helpers;
 using LiteDB;
 
 namespace CartingService.Carting.DAL.Repositories
 {
     public class CartRepository : ICartRepository
     {
-        private readonly string _connectionString;
+        private readonly string _connectionString = @"Carts.db";
 
-        public CartRepository(string connectionString)
-        {
-            _connectionString = connectionString;
-        }
-
-        public Cart GetById(string id)
-        {
-            using (var db = new LiteDatabase(_connectionString))
-            {
-                var cartCollection = db.GetCollection<Cart>("carts");
-                var cart = cartCollection.Include(x => x.Items).FindById(id);
-                return cart;
-            }
-        }
-
-        public List<CartItem> GetItems(string cartId)
+        public IList<CartItem> GetItemsFromCart(Guid cartId)
         {
             using (var db = new LiteDatabase(_connectionString))
             {
@@ -34,7 +18,7 @@ namespace CartingService.Carting.DAL.Repositories
             }
         }
 
-        public void AddItem(string cartId, CartItem item)
+        public Guid AddItemToCart(Guid cartId, CartItem item)
         {
             using (var db = new LiteDatabase(_connectionString))
             {
@@ -42,24 +26,25 @@ namespace CartingService.Carting.DAL.Repositories
                 var cart = cartCollection.Include(x => x.Items).FindById(cartId);
                 if (cart == null)
                 {
-                    cart = new Cart { Id = cartId, Items = new List<CartItem>() };
-                    cartCollection.Insert(cart);
+                   var id = AddCart(cartId, new Cart(cartId), db);
+                   cart = cartCollection.FindById(id);
                 }
-                var existingItem = cart.Items.FirstOrDefault(x => x.Id == item.Id);
-                if (existingItem != null)
+                var existingItem = cart?.Items.FirstOrDefault(x => x.Id == item.Id);
+                if (existingItem != null && cart != null)
                 {
-                    existingItem.Quantity += item.Quantity;
-                    cartCollection.Update(cart);
+                    UpdateCartItem(cartCollection, cart, existingItem, 
+                        CartItemHelpers.GetNewCartItemFromExistingItem(existingItem, existingItem.Quantity + item.Quantity));
                 }
                 else
                 {
-                    cart.Items.Add(item);
-                    cartCollection.Update(cart);
+                    cart?.Items.Add(item);
+                    _ = cartCollection.Update(cart);
                 }
+                return cartCollection.Include(x => x.Items).FindById(cartId).Id;
             }
         }
 
-        public bool RemoveItem(string cartId, int itemId)
+        public bool RemoveItemFromCart(Guid cartId, Guid itemId)
         {
             using (var db = new LiteDatabase(_connectionString))
             {
@@ -77,6 +62,42 @@ namespace CartingService.Carting.DAL.Repositories
                 }
                 return false;
             }
+        }
+
+        public Cart GetCartById(Guid id)
+        {
+            using (var db = new LiteDatabase(_connectionString))
+            {
+                var cartCollection = db.GetCollection<Cart>("carts");
+                var cart = cartCollection.Include(x => x.Items).FindById(id);
+                return cart;
+            }
+        }
+
+        public Guid AddCart(Guid cartId, Cart cart)
+        {
+            using (var db = new LiteDatabase(_connectionString))
+            {
+                return AddCart(cartId, cart, db);
+            }
+        }
+
+        private Guid AddCart(Guid cartId, Cart cart, LiteDatabase db)
+        {
+            var cartCollection = db.GetCollection<Cart>("carts");
+            var existingCart = cartCollection.Include(x => x.Items).FindById(cartId);
+            if (existingCart == null)
+            {
+                return cartCollection.Insert(cart).AsGuid;
+            }
+            return Guid.Empty;
+        }
+
+        private void UpdateCartItem(ILiteCollection<Cart> cartCollection, Cart cart, CartItem existingCartItem, CartItem updatedCartItem)
+        {
+            var itemIndex = cart.Items.IndexOf(existingCartItem);
+            cart.Items[itemIndex] = updatedCartItem;
+            _ = cartCollection.Update(cart);
         }
     }
 }

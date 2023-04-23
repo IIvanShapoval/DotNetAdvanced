@@ -2,8 +2,8 @@
 {
     public class CartDto
     {
-        public string Id { get; set; }
-        public List<CartItemDto> Items { get; set; }
+        public Guid Id { get; set; }
+        public IList<CartItemDto> Items { get; set; }
     }
 
 }
