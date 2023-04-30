@@ -28,5 +28,13 @@ namespace CartingService.Carting.DAL.Helpers
                                                                                     cartItem.ImageUrl,
                                                                                     cartItem.AltText);
 
+        public static CartItem GetNewCartItemFromExistingItem(CartItem cartItem, Guid idFromDb) => new CartItem(idFromDb,
+                                                                            cartItem.Name,
+                                                                            cartItem.Price,
+                                                                            cartItem.Quantity,
+                                                                            cartItem.CategoryId,
+                                                                            cartItem.ImageUrl,
+                                                                            cartItem.AltText);
+
     }
 }

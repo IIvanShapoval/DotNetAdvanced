@@ -4,7 +4,6 @@ namespace CartingService.Carting.DAL.Models
 {
     public class CartItem
     {
-        [BsonId]
         public Guid Id { get; }
 
         public string Name { get; }
@@ -29,7 +28,7 @@ namespace CartingService.Carting.DAL.Models
             string? altText = null
             )
         {
-            if ((_id == Guid.Empty) || String.IsNullOrEmpty(name) || price < 0 || quantity < 0)
+            if (String.IsNullOrEmpty(name) || price < 0 || quantity < 0)
                 throw new ArgumentException("Error creating cart item, invalid argument");
             Id = _id;
             Name = name;

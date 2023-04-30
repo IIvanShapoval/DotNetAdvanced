@@ -5,14 +5,19 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CartingService.Carting.Presentation.Controllers.V1
 {
-    [Route("api/V2/carts")]
     [ApiController]
-    public class CartControllerV2 : CommonController
+    [Route("api/v{version:apiVersion}/[controller]")]
+    [ApiVersion("2.0")]
+    public class CartsController : ControllerBase
     {
-        public CartControllerV2(ICartService cartService) : base(cartService)
+        private readonly ICartService _cartService;
+
+        public CartsController(ICartService cartService)
         {
+            _cartService = cartService;
         }
 
+        [MapToApiVersion("2.0")]
         [HttpGet("{id}")]
         public async Task<ActionResult<IEnumerable<CartItemDto>>> GetCartInfo(Guid id)
         {
