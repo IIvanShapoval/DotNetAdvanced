@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Catalog.Persistance.Migrations
 {
     [DbContext(typeof(CatalogDbContext))]
-    [Migration("20230503235937_Initial")]
-    partial class Initial
+    [Migration("20230504152517_Initial_Create")]
+    partial class Initial_Create
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -60,6 +60,39 @@ namespace Catalog.Persistance.Migrations
                     b.HasIndex("ParentCategoryId");
 
                     b.ToTable("Categories", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Image = "https://example.com/electronics.jpg",
+                            Name = "Electronics"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Image = "https://example.com/computers.jpg",
+                            Name = "Computers",
+                            ParentCategoryId = 1
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Image = "https://example.com/smartphones.jpg",
+                            Name = "Smartphones",
+                            ParentCategoryId = 1
+                        },
+                        new
+                        {
+                            Id = 4,
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Image = "https://example.com/laptops.jpg",
+                            Name = "Laptops",
+                            ParentCategoryId = 2
+                        });
                 });
 
             modelBuilder.Entity("Catalog.Domain.Entities.Product", b =>
@@ -107,6 +140,41 @@ namespace Catalog.Persistance.Migrations
                     b.HasIndex("CategoryId");
 
                     b.ToTable("Poducts", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Amount = 100,
+                            CategoryId = 3,
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "The latest and greatest iPhone.",
+                            Image = "https://example.com/iphone13.jpg",
+                            Name = "iPhone 13",
+                            Price = 999.99m
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Amount = 50,
+                            CategoryId = 4,
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "A powerful and versatile laptop.",
+                            Image = "https://example.com/macbookpro.jpg",
+                            Name = "MacBook Pro",
+                            Price = 1999.99m
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Amount = 30,
+                            CategoryId = 4,
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "A powerful gaming laptop.",
+                            Image = "https://example.com/macbookpro.jpg",
+                            Name = "Asus ROG Strix",
+                            Price = 1999.99m
+                        });
                 });
 
             modelBuilder.Entity("Catalog.Domain.Entities.Category", b =>
