@@ -2,10 +2,10 @@
 {
     public class CategoryProductDto
     {
-        public Guid ProductId { get; set; }
+        public int ProductId { get; set; }
         public string Name { get; set; } = string.Empty;
         public int Price { get; set; }
         public DateTime Date { get; set; }
-        public Guid CategoryId { get; set; }
+        public int CategoryId { get; set; }
     }
 }
