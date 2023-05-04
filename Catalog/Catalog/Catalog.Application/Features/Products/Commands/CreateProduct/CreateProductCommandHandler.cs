@@ -5,7 +5,7 @@ using MediatR;
 
 namespace Catalog.Application.Features.Products.Commands.CreateProduct
 {
-    public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand, Guid>
+    public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand, int>
     {
         private readonly IProductRepository _productRepository;
         private readonly IMapper _mapper;
@@ -16,7 +16,7 @@ namespace Catalog.Application.Features.Products.Commands.CreateProduct
             _productRepository = productRepository;
         }
 
-        public async Task<Guid> Handle(CreateProductCommand request, CancellationToken cancellationToken)
+        public async Task<int> Handle(CreateProductCommand request, CancellationToken cancellationToken)
         {
             var validator = new CreateProductCommandValidator(_productRepository);
             var validationResult = await validator.ValidateAsync(request);

@@ -4,7 +4,7 @@ namespace Catalog.Domain.Entities
 {
     public class Product : AuditableEntity
     {
-        public Guid Id { get; set; }
+        public int Id { get; set; }
 
         public string? Name { get; set; }
 
@@ -12,7 +12,7 @@ namespace Catalog.Domain.Entities
 
         public string? Image { get; set; }
 
-        public Guid CategoryId { get; set; }
+        public int CategoryId { get; set; }
 
         public decimal Price { get; set; }
 

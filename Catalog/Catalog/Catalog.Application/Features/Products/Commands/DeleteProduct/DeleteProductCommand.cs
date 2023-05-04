@@ -4,6 +4,6 @@ namespace Catalog.Application.Features.Products.Commands.DeleteProduct
 {
     public class DeleteProductCommand : IRequest
     {
-        public Guid ProductId { get; set;}
+        public int ProductId { get; set;}
     }
 }

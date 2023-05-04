@@ -5,7 +5,7 @@ namespace Catalog.Application.Features.Products.Commands.UpdateProductCommand
 {
     public class UpdateProductCommand : IRequest
     {
-        public Guid ProductId { get; set; }
+        public int ProductId { get; set; }
 
         public string Name { get; set; } = string.Empty;
 
@@ -13,7 +13,7 @@ namespace Catalog.Application.Features.Products.Commands.UpdateProductCommand
 
         public string? Image { get; set; }
 
-        public Guid CategoryId { get; set; }
+        public int CategoryId { get; set; }
 
         public decimal Price { get; set; }
 

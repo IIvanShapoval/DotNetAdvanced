@@ -4,7 +4,7 @@ namespace Catalog.Domain.Entities
 {
     public class Category : AuditableEntity
     {
-        public Guid Id { get; set; }
+        public int Id { get; set; }
 
         public string Name { get; set; } = String.Empty;
 

@@ -16,7 +16,7 @@ namespace Catalog.Persistance.Repositories
             
         }
 
-        public Task<bool> IsProductNameAndCategoryUnique(string name, Guid categoryId)
+        public Task<bool> IsProductNameAndCategoryUnique(string name, int categoryId)
         {
             var matches = _dbContext.Products.Any(e => e.Name.Equals(name) && e.CategoryId.Equals(categoryId));
             return Task.FromResult(matches);

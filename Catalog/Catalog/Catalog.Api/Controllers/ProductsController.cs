@@ -35,7 +35,7 @@ namespace Catalog.Api.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult> Delete(Guid id)
+        public async Task<ActionResult> Delete(int id)
         {
             var deleteProductCommand = new DeleteProductCommand() { ProductId = id };
             await _mediator.Send(deleteProductCommand);

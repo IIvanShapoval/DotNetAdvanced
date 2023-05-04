@@ -2,7 +2,7 @@
 
 namespace Catalog.Application.Features.Products.Commands.CreateProduct
 {
-    public class CreateProductCommand : IRequest<Guid>
+    public class CreateProductCommand : IRequest<int>
     {
         public string Name { get; set; } = string.Empty;
 
@@ -10,7 +10,7 @@ namespace Catalog.Application.Features.Products.Commands.CreateProduct
 
         public string? Image { get; set; }
 
-        public Guid CategoryId { get; set; }
+        public int CategoryId { get; set; }
 
         public decimal Price { get; set; }
 

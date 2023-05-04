@@ -12,7 +12,7 @@ namespace Catalog.Persistance.Repositories
             _dbContext = dbContext;
         }
 
-        public virtual async Task<T?> GetByIdAsync(Guid id)
+        public virtual async Task<T?> GetByIdAsync(int id)
         {
             T? t = await _dbContext.Set<T>().FindAsync(id);
             return t;
