@@ -14,8 +14,15 @@ namespace Catalog.Api.Controllers
 
         public ProductsController(IMediator mediator) => _mediator = mediator;
 
+        [HttpGet(Name = "GetProducts")]
+        public async Task<ActionResult<int>> GetProducts([FromBody] CreateProductCommand createProductCommand)
+        {
+            var id = await _mediator.Send(createProductCommand);
+            return Ok(id);
+        }
+
         [HttpPost(Name = "AddProduct")]
-        public async Task<ActionResult<Guid>> Create([FromBody] CreateProductCommand createProductCommand)
+        public async Task<ActionResult<int>> Create([FromBody] CreateProductCommand createProductCommand)
         {
             var id = await _mediator.Send(createProductCommand);
             return Ok(id);

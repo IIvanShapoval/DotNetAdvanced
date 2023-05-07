@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Catalog.Application.Contracts.Persistance;
 using Catalog.Application.Exceptions;
+using Catalog.Application.Features.Categories.Queries.GetCategoriesList;
 using Catalog.Domain.Entities;
 using MediatR;
 

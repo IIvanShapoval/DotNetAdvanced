@@ -21,7 +21,7 @@ namespace Catalog.Api.Controllers
 
         [HttpGet("all", Name = "GetAllCategories")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<List<CategoryListVm>>> GetAllCategories()
+        public async Task<ActionResult<CategoryListVm>> GetAllCategories()
         {
             var dtos = await _mediator.Send(new GetCategoriesListQuery());
             return Ok(dtos);
@@ -30,7 +30,7 @@ namespace Catalog.Api.Controllers
         [HttpGet("allwithproducts", Name = "GetCategoriesWithProducts")]
         [ProducesDefaultResponseType]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<List<CategoryProductListVm>>> GetCategoriesWithEvents()
+        public async Task<ActionResult<List<CategoryProductListVm>>> GetCategoriesWithProducts()
         {
             GetCategoriesListWithProductsQuery getCategoriesListWithEventsQuery = new GetCategoriesListWithProductsQuery();
 

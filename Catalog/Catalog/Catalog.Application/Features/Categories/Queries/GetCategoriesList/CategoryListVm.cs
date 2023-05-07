@@ -2,7 +2,13 @@
 {
     public class CategoryListVm
     {
-        public int CategoryId { get; set; }
-        public string Name { get; set; } = string.Empty;
+        public IReadOnlyCollection<CategoryDto> Categories { get; set; }
+
+        public CategoryListVm() { }
+
+        public CategoryListVm(IReadOnlyCollection<CategoryDto> categories)
+        {
+            Categories = categories;
+        }
     }
 }

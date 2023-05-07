@@ -1,4 +1,6 @@
-﻿namespace Catalog.Application.Features.Products.Queries.GetProducts
+﻿using Catalog.Application.Features.Categories.Queries.GetCategoriesList;
+
+namespace Catalog.Application.Features.Products.Queries.GetProducts
 {
     public class ProductVm
     {
