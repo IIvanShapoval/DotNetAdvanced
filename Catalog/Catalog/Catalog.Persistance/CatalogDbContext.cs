@@ -17,8 +17,16 @@ namespace Catalog.Persistance
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Category>().Property(c => c.Name).HasMaxLength(50).IsRequired();
+            modelBuilder.Entity<Category>().Property(c => c.ParentCategoryId).IsRequired(false);
             modelBuilder.Entity<Category>().ToTable("Categories");
-
+            modelBuilder
+                .Entity<Category>()
+                .HasOne(c => c.ParentCategory)
+                .WithMany()
+                .HasForeignKey(e => e.ParentCategoryId)
+                .OnDelete(DeleteBehavior.Cascade);
+                        
+            
             modelBuilder.Entity<Product>().Property(c => c.Name).HasMaxLength(50).IsRequired();
             modelBuilder.Entity<Product>().ToTable("Poducts");
 

@@ -19,14 +19,14 @@ namespace Catalog.Application.Features.Categories.Commands.DeleteCategory
 
         public async Task Handle(DeleteCategoryCommand request, CancellationToken cancellationToken)
         {
-            var productToDelete = await _categoryRepository.GetByIdAsync(request.CategoryId);
+            var categoryToDelete = await _categoryRepository.GetByIdAsync(request.Id);
 
-            if (productToDelete == null)
+            if (categoryToDelete == null)
             {
-                throw new NotFoundException(nameof(Product), request.CategoryId);
+                throw new NotFoundException(nameof(Product), request.Id);
             }
 
-            await _categoryRepository.DeleteAsync(productToDelete);
+            await _categoryRepository.DeleteAsync(categoryToDelete);
         }
     }
 }

@@ -19,11 +19,11 @@ namespace Catalog.Application.Features.Products.Commands.DeleteProduct
 
         public async Task Handle(DeleteProductCommand request, CancellationToken cancellationToken)
         {
-            var productToDelete = await _productRepository.GetByIdAsync(request.ProductId);
+            var productToDelete = await _productRepository.GetByIdAsync(request.Id);
 
             if (productToDelete == null)
             {
-                throw new NotFoundException(nameof(Product), request.ProductId);
+                throw new NotFoundException(nameof(Product), request.Id);
             }
 
             await _productRepository.DeleteAsync(productToDelete);

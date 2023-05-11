@@ -34,7 +34,7 @@ namespace Catalog.Application.Features.Categories.Commands.CreateCategory
             }
             if (createCategoryCommandResponse.Success)
             {
-                var category = new Category() { Name = request.Name };
+                var category = new Category() { Name = request.Name, ParentCategoryId = request.ParentCategoryId };
                 category = await _categoryRepository.AddAsync(category);
                 createCategoryCommandResponse.Category = _mapper.Map<CreateCategoryDto>(category);
             }

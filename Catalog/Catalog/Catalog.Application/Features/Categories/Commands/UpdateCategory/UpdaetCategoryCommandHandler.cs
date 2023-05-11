@@ -20,10 +20,10 @@ namespace Catalog.Application.Features.Categories.Commands.UpdateCategory
 
         public async Task Handle(UpdateCategoryCommand request, CancellationToken cancellationToken)
         {
-            var categoryToUpdate = await _categoryRepository.GetByIdAsync(request.CategoryId);
+            var categoryToUpdate = await _categoryRepository.GetByIdAsync(request.Id);
             if (categoryToUpdate == null)
             {
-                throw new NotFoundException(nameof(Category), request.CategoryId);
+                throw new NotFoundException(nameof(Category), request.Id);
             }
 
             var validator = new UpdateCategoryCommandValidator();

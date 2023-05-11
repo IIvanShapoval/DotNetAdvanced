@@ -5,7 +5,7 @@ namespace Catalog.Application.Features.Products.Commands.UpdateProductCommand
 {
     public class UpdateProductCommand : IRequest
     {
-        public int ProductId { get; set; }
+        public int Id { get; set; }
 
         public string Name { get; set; } = string.Empty;
 

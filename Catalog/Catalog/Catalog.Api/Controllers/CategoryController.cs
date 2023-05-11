@@ -55,7 +55,7 @@ namespace Catalog.Api.Controllers
         [HttpDelete(Name = "DeleteCategory")]
         public async Task<ActionResult> Delete(int id)
         {
-            var deleteCategoryCommand = new DeleteCategoryCommand() { CategoryId = id };
+            var deleteCategoryCommand = new DeleteCategoryCommand() { Id = id };
             await _mediator.Send(deleteCategoryCommand);
             return NoContent();
         }

@@ -37,7 +37,7 @@ namespace Catalog.Api
                 app.UseSwagger();
                 app.UseSwaggerUI(c =>
                 {
-                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "GloboTicket Ticket Management API");
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Catalog Service API");
                 });
             }
 

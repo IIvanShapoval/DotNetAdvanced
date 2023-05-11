@@ -44,7 +44,7 @@ namespace Catalog.Api.Controllers
         [ProducesDefaultResponseType]
         public async Task<ActionResult> Delete(int id)
         {
-            var deleteProductCommand = new DeleteProductCommand() { ProductId = id };
+            var deleteProductCommand = new DeleteProductCommand() { Id = id };
             await _mediator.Send(deleteProductCommand);
             return NoContent();
         }

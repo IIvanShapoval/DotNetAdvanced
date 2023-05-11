@@ -26,10 +26,10 @@ namespace Catalog.Application.Features.Products.Commands.UpdateProductCommand
             public async Task Handle(UpdateProductCommand request, CancellationToken cancellationToken)
             {
 
-                var productToUpdate = await _productRepository.GetByIdAsync(request.ProductId);
+                var productToUpdate = await _productRepository.GetByIdAsync(request.Id);
                 if (productToUpdate == null)
                 {
-                    throw new NotFoundException(nameof(Product), request.ProductId);
+                    throw new NotFoundException(nameof(Product), request.Id);
                 }
 
                 var validator = new UpdateProductCommandValidator();
