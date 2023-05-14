@@ -1,5 +1,11 @@
-﻿using Catalog.Application.Contracts.Persistance;
+﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using Catalog.Application.Contracts.Persistance;
 using Catalog.Application.Exceptions;
+using Catalog.Application.Features.Categories.Queries.GetCategoriesListWithProducts;
+using Catalog.Application.Features.Products.Queries.GetProductList;
+using Catalog.Application.Mappings;
+using Catalog.Application.Models;
 using Catalog.Domain.Entities;
 using Catalog.Persistance.Migrations;
 using Microsoft.EntityFrameworkCore.Diagnostics;
@@ -13,9 +19,11 @@ namespace Catalog.Persistance.Repositories
 {
     public class ProductRepository : BaseRepository<Product>, IProductRepository
     {
-        public ProductRepository(CatalogDbContext dbContext) : base(dbContext)
-        {
+        private readonly IMapper _mapper;
 
+        public ProductRepository(CatalogDbContext dbContext, IMapper mapper) : base(dbContext)
+        {
+            _mapper = mapper;
         }
 
         public Task<bool> IsProductNameAndCategoryUnique(string name, int categoryId)
@@ -37,6 +45,15 @@ namespace Catalog.Persistance.Repositories
             await _dbContext.SaveChangesAsync();
 
             return entity;
+        }
+
+        public async Task<PaginatedList<ProductDto>> GetAllProducts(GetProductsWithPaginationQuery request)
+        {
+            return await _dbContext.Products
+                .Where(product => product.CategoryId == request.CategoryId)
+                .OrderBy(product => product.Name)
+                .ProjectTo<ProductDto>(_mapper.ConfigurationProvider)
+                .PaginatedListAsync(request.PageNumber, request.PageSize);
         }
     }
 }

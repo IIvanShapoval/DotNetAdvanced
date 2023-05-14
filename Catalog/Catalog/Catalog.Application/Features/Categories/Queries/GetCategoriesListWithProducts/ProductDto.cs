@@ -7,7 +7,7 @@ namespace Catalog.Application.Features.Categories.Queries.GetCategoriesListWithP
     {
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
-        public int Price { get; set; }
+        public decimal Price { get; set; }
         public DateTime Date { get; set; }
         public int CategoryId { get; set; }
     }

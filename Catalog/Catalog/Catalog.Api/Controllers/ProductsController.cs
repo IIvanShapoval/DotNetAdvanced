@@ -3,6 +3,9 @@ using Catalog.Application.Features.Products.Commands.UpdateProductCommand;
 using Catalog.Application.Features.Products.Commands.DeleteProduct;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Catalog.Application.Features.Products.Queries.GetProductList;
+using Catalog.Application.Models;
+using Catalog.Application.Features.Categories.Queries.GetCategoriesListWithProducts;
 
 namespace Catalog.Api.Controllers
 {
@@ -15,10 +18,9 @@ namespace Catalog.Api.Controllers
         public ProductsController(IMediator mediator) => _mediator = mediator;
 
         [HttpGet(Name = "GetProducts")]
-        public async Task<ActionResult<int>> GetProducts([FromBody] CreateProductCommand createProductCommand)
+        public async Task<ActionResult<PaginatedList<ProductDto>>> GetProducts([FromQuery] GetProductsWithPaginationQuery getProductsWithPaginationQuery)
         {
-            var id = await _mediator.Send(createProductCommand);
-            return Ok(id);
+           return await _mediator.Send(getProductsWithPaginationQuery);
         }
 
         [HttpPost(Name = "AddProduct")]
