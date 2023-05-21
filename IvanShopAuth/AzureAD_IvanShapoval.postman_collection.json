@@ -1,0 +1,18 @@
+{
+	"info": {
+		"_postman_id": "15abb8d3-91df-4079-8210-0985e949bbd9",
+		"name": "Azure AD",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "4334921"
+	},
+	"item": [
+		{
+			"name": "New Request",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		}
+	]
+}

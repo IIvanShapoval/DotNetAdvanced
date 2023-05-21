@@ -5,11 +5,15 @@ using Catalog.Application.Features.Categories.Commands.UpdateCategory;
 using Catalog.Application.Features.Categories.Commands.DeleteCategory;
 using Catalog.Application.Features.Categories.Queries.GetCategoriesList;
 using Catalog.Application.Features.Categories.Queries.GetCategoriesListWithProducts;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.Identity.Web.Resource;
 
 namespace Catalog.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [RequiredScope(RequiredScopesConfigurationKey = "AzureAd:scopes")]
+    [Authorize(Roles ="Manager")]
     public class CategoryController : ControllerBase
     {
         private readonly IMediator _mediator;

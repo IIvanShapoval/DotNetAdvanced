@@ -1,7 +1,9 @@
 ﻿using Catalog.Application;
 using Catalog.Persistance;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Azure;
+using Microsoft.Identity.Web;
 using Microsoft.OpenApi.Models;
 
 
@@ -30,6 +32,9 @@ namespace Catalog.Api
                 options.AddPolicy("Open", builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
             });
 
+            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddMicrosoftIdentityWebApi(builder.Configuration);
+
             return builder.Build();
 
         }
@@ -47,7 +52,8 @@ namespace Catalog.Api
             }
 
             //app.UseRouting();
-
+            app.UseAuthentication();
+            app.UseAuthorization();
             app.UseCors("Open");
 
             app.MapControllers();
