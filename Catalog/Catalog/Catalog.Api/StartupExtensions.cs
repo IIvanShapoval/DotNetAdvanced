@@ -1,6 +1,7 @@
 ﻿using Catalog.Application;
 using Catalog.Persistance;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Azure;
 using Microsoft.OpenApi.Models;
 
 
@@ -13,10 +14,14 @@ namespace Catalog.Api
         {
             AddSwagger(builder.Services);
 
-            builder.Services.AddApplicationServices();
+            builder.Services.AddApplicationServices(builder.Configuration);
             builder.Services.AddPersistenceServices(builder.Configuration);
 
             builder.Services.AddHttpContextAccessor();
+
+            //builder.Services.AddAzureClients(clientFactoryBuilder =>
+            //                                    clientFactoryBuilder.AddServiceBusClient(
+            //                                        builder.Configuration.GetConnectionString("ServiceBus")));
 
             builder.Services.AddControllers();
 

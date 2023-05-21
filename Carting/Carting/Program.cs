@@ -2,8 +2,10 @@ using CartingService;
 using CartingService.Carting.BLL.Services;
 using CartingService.Carting.DAL.Infrastructure;
 using CartingService.Carting.DAL.Repositories;
+using CartingService.Carting.Infrastructure;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.AspNetCore.Mvc.Versioning;
+using Microsoft.Extensions.Azure;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -40,6 +42,11 @@ builder.Services.AddSingleton<ILiteDbContext, LiteDbContext>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.ConfigureOptions<ConfigureSwaggerOptions>();
+builder.Services.AddHostedService<CatalogListenerService>();
+
+builder.Services.AddAzureClients(clientFactoryBuilder =>
+                        clientFactoryBuilder.AddServiceBusClient(
+                           builder.Configuration.GetConnectionString("ServiceBus")));
 
 var app = builder.Build();
 
