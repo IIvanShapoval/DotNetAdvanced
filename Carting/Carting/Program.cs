@@ -47,6 +47,7 @@ builder.Services.AddHostedService<CatalogListenerService>();
 builder.Services.AddAzureClients(clientFactoryBuilder =>
                         clientFactoryBuilder.AddServiceBusClient(
                            builder.Configuration.GetConnectionString("ServiceBus")));
+builder.Services.AddApplicationInsightsTelemetry(builder.Configuration["APPLICATIONINSIGHTS_CONNECTION_STRING"]);
 
 var app = builder.Build();
 
