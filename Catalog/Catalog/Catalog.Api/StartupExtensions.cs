@@ -21,10 +21,6 @@ namespace Catalog.Api
 
             builder.Services.AddHttpContextAccessor();
 
-            //builder.Services.AddAzureClients(clientFactoryBuilder =>
-            //                                    clientFactoryBuilder.AddServiceBusClient(
-            //                                        builder.Configuration.GetConnectionString("ServiceBus")));
-
             builder.Services.AddControllers();
 
             builder.Services.AddCors(options =>
