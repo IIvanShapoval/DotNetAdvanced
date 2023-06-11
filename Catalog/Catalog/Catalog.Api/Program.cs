@@ -1,11 +1,28 @@
 using Catalog.Api;
+using Serilog;
 
-var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddApplicationInsightsTelemetry(builder.Configuration["APPLICATIONINSIGHTS_CONNECTION_STRING"]);
+Log.Logger = new LoggerConfiguration()
+    .WriteTo.Console()
+    .CreateLogger();
 
-var app = builder.ConfigureServices()
-    .ConfigurePipeline();
+try
+{
 
-//await app.ResetDatabaseAsync();
+    var builder = WebApplication.CreateBuilder(args);
 
-app.Run();
+    var app = builder.ConfigureServices()
+        .ConfigurePipeline();
+
+    //await app.ResetDatabaseAsync();
+
+    app.Run();
+
+}
+catch (Exception ex)
+{
+    Log.Fatal(ex, "Application terminated unexpectedly");
+}
+finally
+{
+    Log.CloseAndFlush();
+}

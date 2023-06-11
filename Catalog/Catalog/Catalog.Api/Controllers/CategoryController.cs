@@ -12,8 +12,8 @@ namespace Catalog.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [RequiredScope(RequiredScopesConfigurationKey = "AzureAd:scopes")]
-    [Authorize(Roles ="Manager")]
+    //[RequiredScope(RequiredScopesConfigurationKey = "AzureAd:scopes")]
+    //[Authorize(Roles ="Manager")]
     public class CategoryController : ControllerBase
     {
         private readonly IMediator _mediator;

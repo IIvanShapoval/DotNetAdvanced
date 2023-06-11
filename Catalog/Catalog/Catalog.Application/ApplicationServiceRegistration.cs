@@ -1,6 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Azure;
 using Microsoft.Extensions.Configuration;
+using MediatR;
+using Catalog.Application.Behaviors;
 
 namespace Catalog.Application
 {
@@ -17,6 +19,10 @@ namespace Catalog.Application
             //        return new ServiceBusClient("ivansandbox.servicebus.windows.net", new DefaultAzureCredential());
             //    });
             //});
+
+            services.AddScoped(
+                typeof(IPipelineBehavior<,>),
+                typeof(LoggingBehavior<,>));
 
             services.AddAzureClients(clientFactoryBuilder =>
                                     clientFactoryBuilder.AddServiceBusClient(

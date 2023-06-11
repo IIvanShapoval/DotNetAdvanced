@@ -1,11 +1,11 @@
 ﻿using Catalog.Application;
 using Catalog.Persistance;
+using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Azure;
 using Microsoft.Identity.Web;
 using Microsoft.OpenApi.Models;
-
+using Serilog;
 
 namespace Catalog.Api
 {
@@ -16,10 +16,30 @@ namespace Catalog.Api
         {
             AddSwagger(builder.Services);
 
+            //builder.Host.UseSerilog((hostingContext, loggerConfiguration) => loggerConfiguration
+            //        .ReadFrom.Configuration(hostingContext.Configuration)
+            //        .WriteTo.ApplicationInsights(new TelemetryConfiguration 
+            //        { InstrumentationKey = "xxxxxxxxx" }, TelemetryConverter.Traces)
+            // );
+
+            builder.Services.AddApplicationInsightsTelemetry();
+
+            builder.Host.UseSerilog((hostingContext, services, loggerConfiguration) => loggerConfiguration
+                    .ReadFrom.Configuration(hostingContext.Configuration)
+                    .Enrich.WithCorrelationId()
+                    .Enrich.WithCorrelationIdHeader("ivanshop-correlation-id")
+                    .WriteTo.ApplicationInsights(services.GetRequiredService<TelemetryConfiguration>(),
+                                                                                        TelemetryConverter.Traces)
+            //.WriteTo.ApplicationInsights(new TelemetryConfiguration
+            //{ InstrumentationKey = "xxxxxxxxx" }, TelemetryConverter.Traces)
+            );
+
             builder.Services.AddApplicationServices(builder.Configuration);
             builder.Services.AddPersistenceServices(builder.Configuration);
 
             builder.Services.AddHttpContextAccessor();
+            builder.Services.AddHeaderPropagation(options =>
+                                            options.Headers.Add("ivanshop-correlation-id"));
 
             builder.Services.AddControllers();
 
@@ -31,8 +51,11 @@ namespace Catalog.Api
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddMicrosoftIdentityWebApi(builder.Configuration);
 
-            return builder.Build();
+            var app = builder.Build();
 
+            app.UseSerilogRequestLogging();
+
+            return app;
         }
 
         public static WebApplication ConfigurePipeline(this WebApplication app)
@@ -48,8 +71,8 @@ namespace Catalog.Api
             }
 
             //app.UseRouting();
-            app.UseAuthentication();
-            app.UseAuthorization();
+            //app.UseAuthentication();
+            //app.UseAuthorization();
             app.UseCors("Open");
 
             app.MapControllers();
@@ -67,7 +90,7 @@ namespace Catalog.Api
                     Version = "v1",
                     Title = "Catalog Management API",
 
-                });                              
+                });
             });
         }
 

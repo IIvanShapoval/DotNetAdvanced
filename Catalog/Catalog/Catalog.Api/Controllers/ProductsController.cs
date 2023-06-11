@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Catalog.Application.Features.Products.Queries.GetProductList;
 using Catalog.Application.Models;
 using Catalog.Application.Features.Categories.Queries.GetCategoriesListWithProducts;
+using Microsoft.EntityFrameworkCore.ValueGeneration;
 
 namespace Catalog.Api.Controllers
 {
@@ -36,6 +37,8 @@ namespace Catalog.Api.Controllers
         [ProducesDefaultResponseType]
         public async Task<ActionResult> Update([FromBody] UpdateProductCommand updateProductCommand)
         {
+            Request.Headers.TryGetValue("ivanshop-correlation-id", out var correlationId);
+            updateProductCommand.CorrelationId = correlationId;
             await _mediator.Send(updateProductCommand);
             return NoContent();
         }

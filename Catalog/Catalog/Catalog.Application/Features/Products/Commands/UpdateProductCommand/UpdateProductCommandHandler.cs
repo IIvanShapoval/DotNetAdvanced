@@ -4,11 +4,12 @@ using Catalog.Application.Contracts.Persistance;
 using Catalog.Application.Exceptions;
 using Catalog.Domain.Entities;
 using MediatR;
+using System.Reflection;
 using System.Text.Json;
 
 namespace Catalog.Application.Features.Products.Commands.UpdateProductCommand
 {
-    public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand>
+    public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand, bool>
     {
         private readonly IAsyncRepository<Product> _productRepository;
         private readonly IMapper _mapper;
@@ -23,7 +24,7 @@ namespace Catalog.Application.Features.Products.Commands.UpdateProductCommand
             _serviceBusClient = serviceBusClient;
         }
 
-        public async Task Handle(UpdateProductCommand request, CancellationToken cancellationToken)
+        public async Task<bool> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
         {
 
             var productToUpdate = await _productRepository.GetByIdAsync(request.Id);
@@ -42,13 +43,17 @@ namespace Catalog.Application.Features.Products.Commands.UpdateProductCommand
 
             await _productRepository.UpdateAsync(productToUpdate);
             await SendUpdateMessage(productToUpdate);
+            return true;
         }
+
 
         private async Task SendUpdateMessage(Product product)
         {
             var sender = _serviceBusClient.CreateSender("update-catalog-data");
             var body = JsonSerializer.Serialize(product);
+            
             var message = new ServiceBusMessage(body);
+            
             if (body.Contains("scheduled"))
                 message.ScheduledEnqueueTime = DateTimeOffset.UtcNow.AddSeconds(15);
 
@@ -57,6 +62,8 @@ namespace Catalog.Application.Features.Products.Commands.UpdateProductCommand
 
             await sender.SendMessageAsync(message);
         }
+
+       
     }
 }
 

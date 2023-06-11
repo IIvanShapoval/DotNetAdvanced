@@ -3,7 +3,7 @@ using System.Net.Http.Headers;
 
 namespace Catalog.Application.Features.Products.Commands.UpdateProductCommand
 {
-    public class UpdateProductCommand : IRequest
+    public class UpdateProductCommand : IRequest<bool>
     {
         public int Id { get; set; }
 
@@ -20,5 +20,7 @@ namespace Catalog.Application.Features.Products.Commands.UpdateProductCommand
         public int Amount { get; set; }
 
         public string? ImageUrl { get; set; }
+
+        public string? CorrelationId { get; set; }
     }
 }
