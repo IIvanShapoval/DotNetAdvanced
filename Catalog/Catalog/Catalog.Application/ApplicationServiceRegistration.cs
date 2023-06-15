@@ -3,6 +3,7 @@ using Microsoft.Extensions.Azure;
 using Microsoft.Extensions.Configuration;
 using MediatR;
 using Catalog.Application.Behaviors;
+    using CorrelationId.DependencyInjection;
 
 namespace Catalog.Application
 {
@@ -19,6 +20,16 @@ namespace Catalog.Application
             //        return new ServiceBusClient("ivansandbox.servicebus.windows.net", new DefaultAzureCredential());
             //    });
             //});
+
+            services.AddDefaultCorrelationId(options =>
+            {
+                options.AddToLoggingScope = true;
+                options.IgnoreRequestHeader = false;
+                options.IncludeInResponse = true;
+                options.RequestHeader = "x-correlation-id";
+                options.ResponseHeader = "x-correlation-id";
+                options.UpdateTraceIdentifier = true;
+            });
 
             services.AddScoped(
                 typeof(IPipelineBehavior<,>),

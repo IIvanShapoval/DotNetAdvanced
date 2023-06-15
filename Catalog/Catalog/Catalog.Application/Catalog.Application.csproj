@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Catalog.Domain\Catalog.Domain.csproj" />
+    <ProjectReference Include="..\CorrelationId\CorrelationId.csproj" />
   </ItemGroup>
 
   <ItemGroup>

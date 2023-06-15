@@ -20,7 +20,5 @@ namespace Catalog.Application.Features.Products.Commands.UpdateProductCommand
         public int Amount { get; set; }
 
         public string? ImageUrl { get; set; }
-
-        public string? CorrelationId { get; set; }
     }
 }

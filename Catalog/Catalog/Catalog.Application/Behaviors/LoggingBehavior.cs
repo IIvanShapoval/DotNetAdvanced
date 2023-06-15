@@ -20,16 +20,8 @@ namespace Catalog.Application.Behaviors
             _logger.LogInformation($"Handling {typeof(TRequest).Name}");
             Type myType = request.GetType();
 
-            var myTypeisUpdateProduct = myType.Name == typeof(UpdateProductCommand).Name;
-
-
             IList<PropertyInfo> props = new List<PropertyInfo>(myType.GetProperties());
-            
-            if(myTypeisUpdateProduct)
-            {
-                SetCorrelationId(request as UpdateProductCommand, props);
-            }
-
+           
             foreach (PropertyInfo prop in props)
             {
                 object propValue = prop.GetValue(request, null);
@@ -41,19 +33,6 @@ namespace Catalog.Application.Behaviors
             //Response
             _logger.LogInformation($"Handled {typeof(TResponse).Name}");
             return response;
-        }
-
-        private void SetCorrelationId(UpdateProductCommand request, IList<PropertyInfo> props)
-        {
-           var correlationIdProperty = props.FirstOrDefault(prop => prop.Name == "CorrelationId");
-
-            object correlationIdValue = null;
-            if (correlationIdProperty != null)
-            {
-                correlationIdValue = (PropertyInfo)correlationIdProperty.GetValue(request, null);
-            }
-
-            request.CorrelationId = correlationIdValue != null ? correlationIdValue.ToString() : String.Empty;
         }
     }
 }

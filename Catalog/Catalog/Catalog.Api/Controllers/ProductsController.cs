@@ -37,8 +37,6 @@ namespace Catalog.Api.Controllers
         [ProducesDefaultResponseType]
         public async Task<ActionResult> Update([FromBody] UpdateProductCommand updateProductCommand)
         {
-            Request.Headers.TryGetValue("ivanshop-correlation-id", out var correlationId);
-            updateProductCommand.CorrelationId = correlationId;
             await _mediator.Send(updateProductCommand);
             return NoContent();
         }

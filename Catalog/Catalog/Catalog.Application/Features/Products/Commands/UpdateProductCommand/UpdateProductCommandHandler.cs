@@ -6,6 +6,7 @@ using Catalog.Domain.Entities;
 using MediatR;
 using System.Reflection;
 using System.Text.Json;
+using CorrelationId.Abstractions;
 
 namespace Catalog.Application.Features.Products.Commands.UpdateProductCommand
 {
@@ -14,14 +15,17 @@ namespace Catalog.Application.Features.Products.Commands.UpdateProductCommand
         private readonly IAsyncRepository<Product> _productRepository;
         private readonly IMapper _mapper;
         private readonly ServiceBusClient _serviceBusClient;
+        private readonly ICorrelationContextAccessor _correlationContextAccessor;
 
         public UpdateProductCommandHandler(IMapper mapper,
             IAsyncRepository<Product> productRepository,
-            ServiceBusClient serviceBusClient)
+            ServiceBusClient serviceBusClient,
+            ICorrelationContextAccessor correlationContextAccessor)
         {
             _mapper = mapper;
             _productRepository = productRepository;
             _serviceBusClient = serviceBusClient;
+            _correlationContextAccessor = correlationContextAccessor;
         }
 
         public async Task<bool> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
@@ -53,6 +57,8 @@ namespace Catalog.Application.Features.Products.Commands.UpdateProductCommand
             var body = JsonSerializer.Serialize(product);
             
             var message = new ServiceBusMessage(body);
+
+            message.CorrelationId = _correlationContextAccessor.CorrelationContext.CorrelationId;
             
             if (body.Contains("scheduled"))
                 message.ScheduledEnqueueTime = DateTimeOffset.UtcNow.AddSeconds(15);
